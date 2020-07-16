@@ -38,19 +38,20 @@ async def message_callback(room: MatrixRoom, event: RoomMessageText) -> None:
     raw_text = raw_text[1:]
     raw_text_split = raw_text.split(" ")
     # Get first in split, the command.
-    command = raw_text_split[0]
+    command = raw_text_split[0].lower()
     # Get the arguments
     args = raw_text_split
     args.pop(0)
 
     for command_path in glob(f'./commands/**/{command}.py', recursive=True):
         # Get command_name and command_dir
-        command_name = command_path.rsplit('/', 1)[1].replace(".py", "").title()
+        command_name = command_path.rsplit('/', 1)[1].replace(".py", "")
         command_module_path = command_path.replace('./', '').replace('/', '.').replace('.py', '')
         # Import command
         command = getattr(import_module(command_module_path), f'{command_name}')
         # Initialize and execute command
         command = command()
+        print(command.help)
         await command.execute(client=client, room=room, args=args)
 
         return

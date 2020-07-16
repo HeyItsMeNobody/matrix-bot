@@ -1,6 +1,7 @@
 import re
+from util.BaseCommand import BaseCommand
 
-class Speak:
+class speak(BaseCommand):
     def __init__(self) -> None:
         self.help = "Can echo whatever you want."
 
