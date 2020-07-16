@@ -3,7 +3,7 @@ from util.BaseCommand import BaseCommand
 
 class speak(BaseCommand):
     def __init__(self) -> None:
-        self.help = "Can echo whatever you want."
+        self.description = "Can echo whatever you want."
 
     async def execute(self, client, room, args):
         text = " ".join(args)

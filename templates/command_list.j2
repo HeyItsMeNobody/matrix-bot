@@ -1,0 +1,6 @@
+{% for category, commands in categories.items() %}
+<strong>{{ category.title() }}</strong><br>
+{% for command in commands %}
+- {{ command }}<br>
+{% endfor %}
+{% endfor %}

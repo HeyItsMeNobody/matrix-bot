@@ -1,6 +1,6 @@
 class BaseCommand:
     def __init__(self) -> None:
-        self.help = "Base command."
+        self.description = "Base command."
 
     async def execute(self, client, room, args):
         await client.room_send(
