@@ -11,6 +11,7 @@ from io import BytesIO
 from pathlib import Path
 from glob import glob
 from importlib import import_module
+from util.general import get_command
 
 client_config = AsyncClientConfig(max_timeouts=10)
 client = AsyncClient(config.homeserver, config.user, config=client_config, ssl=False)
@@ -43,19 +44,15 @@ async def message_callback(room: MatrixRoom, event: RoomMessageText) -> None:
     args = raw_text_split
     args.pop(0)
 
-    for command_path in glob(f'./commands/**/{command}.py', recursive=True):
-        # Get command_name and command_dir
-        command_name = command_path.rsplit('/', 1)[1].replace(".py", "")
-        command_module_path = command_path.replace('./', '').replace('/', '.').replace('.py', '')
-        # Import command
-        command = getattr(import_module(command_module_path), f'{command_name}')
-        # Initialize and execute command
+    # Get the command class
+    command = get_command(command)
+    if command:
+        # Initialize command class
         command = command()
-        print(command.help)
-        await command.execute(client=client, room=room, args=args)
+        # Execute the command
+        return await command.execute(client=client, room=room, args=args)
 
-        return
-
+    # Send command not found message
     await client.room_send(
         room_id=room.room_id,
         message_type="m.room.message",
