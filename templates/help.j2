@@ -1,1 +1,6 @@
 <strong>Description:</strong> {{ command.description }}<br>
+<strong>Arguments:</strong><br>
+{% for option, content in command.arguments.items() %}
+<strong>{{option}}</strong>&ensp;<u>{{content['accepts']}}</u><br>
+&emsp;{{content['description']}}<br>
+{% endfor %}

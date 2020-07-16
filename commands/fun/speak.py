@@ -4,6 +4,7 @@ from util.BaseCommand import BaseCommand
 class speak(BaseCommand):
     def __init__(self) -> None:
         self.description = "Can echo whatever you want."
+        self.arguments = {"--headers -h": {"accepts": "h[1-6]", "description": None}}
 
     async def execute(self, client, room, args):
         text = " ".join(args)

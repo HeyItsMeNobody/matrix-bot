@@ -1,6 +1,7 @@
 class BaseCommand:
     def __init__(self) -> None:
         self.description = "Base command."
+        self.arguments = {"--example -e": {"accepts": None, "description": None}}
 
     async def execute(self, client, room, args):
         await client.room_send(
