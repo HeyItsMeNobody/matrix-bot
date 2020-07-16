@@ -4,6 +4,7 @@ from importlib import import_module
 import jinja2
 
 def get_command(command):
+    """Gets a simple command and returns the import."""
     # Find the command file in the commands dir
     for command_path in glob(f'./commands/**/{command}.py', recursive=True):
         # Get command_name and command_dir
@@ -17,6 +18,10 @@ def get_command(command):
     return None
 
 def list_all_commands():
+    """Returns a dictionary of command categories and commands.
+
+    {'category': ['command_name1', 'command_name2']}
+    """
     commands = {}
     # Find the command file in the commands dir
     for command_path in glob(f'./commands/**/*.py', recursive=True):
@@ -32,6 +37,7 @@ def list_all_commands():
     return commands
 
 async def send_generic_msg(client, room, text):
+    """Sends a generic (unformatted) message"""
     await client.room_send(
         room_id=room.room_id,
         message_type="m.room.message",
@@ -42,6 +48,7 @@ async def send_generic_msg(client, room, text):
     )
 
 async def send_formatted_msg(client, room, text, text_html):
+    """Sends a formatted message"""
     await client.room_send(
         room_id=room.room_id,
         message_type="m.room.message",
@@ -54,6 +61,7 @@ async def send_formatted_msg(client, room, text, text_html):
     )
 
 def get_jinja_template(name):
+    """Gets a Jinja2 template from the templates folder"""
     template_loader = jinja2.FileSystemLoader(searchpath="./templates")
     template_environment = jinja2.Environment(loader=template_loader, autoescape=True, trim_blocks=True, lstrip_blocks=True)
     return template_environment.get_template(name)
