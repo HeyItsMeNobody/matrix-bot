@@ -80,3 +80,8 @@ def get_image_width_and_height(file):
     # Reset file pointer
     file.seek(0)
     return width, height
+
+def allowed_image_type(filename):
+    """ Says if this is an allowed image type. """
+    return '.' in filename and \
+        filename.rsplit('.', 1)[1].lower() in ['jpg', 'jpeg', 'png', 'gif', 'webm']

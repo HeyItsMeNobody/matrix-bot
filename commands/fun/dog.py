@@ -1,7 +1,7 @@
 import requests
 from nio import Api as MatrixApi
 from io import BufferedReader, BytesIO
-from util.general import get_image_width_and_height, send_generic_msg
+from util.general import get_image_width_and_height, send_generic_msg, allowed_image_type
 from mimetypes import guess_extension
 from util.BaseCommand import BaseCommand
 from nio import UploadError
@@ -71,7 +71,7 @@ class dog(BaseCommand):
         content_type = request.headers['Content-Type']
         extension = guess_extension(content_type)
         # See if the extension is allowed
-        if not self.allowed_image_type("dog" + extension):
+        if not allowed_image_type("dog" + extension):
             return self.get_dog_picture()
 
         return request, content_type, extension
