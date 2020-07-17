@@ -11,7 +11,6 @@ class dog(BaseCommand):
     def __init__(self) -> None:
         super().__init__()
         self.description = "Sends dog pictures (Broken thumbnail)"
-        self.arguments = {"--example -e": {"accepts": None, "description": None}}
 
     async def execute(self, client, room, args):
         # Get the dog picture
