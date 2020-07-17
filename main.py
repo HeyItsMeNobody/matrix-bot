@@ -30,6 +30,10 @@ async def message_callback(room: MatrixRoom, event: RoomMessageText) -> None:
         f"{event.server_timestamp} | {room.user_name(event.sender)} | {event.body}"
     )
 
+    # Check if it's itself
+    if event.sender == config.user:
+        return
+
     # Filter out text
     raw_text = event.body
     if not raw_text.startswith("!"):
