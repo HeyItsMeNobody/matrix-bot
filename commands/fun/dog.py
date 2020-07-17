@@ -1,9 +1,10 @@
 import requests
 from nio import Api as MatrixApi
 from io import BufferedReader, BytesIO
-from util.general import get_image_width_and_height
+from util.general import get_image_width_and_height, send_generic_msg
 from mimetypes import guess_extension
 from util.BaseCommand import BaseCommand
+from nio import UploadError
 
 class dog(BaseCommand):
     def __init__(self) -> None:
@@ -25,6 +26,10 @@ class dog(BaseCommand):
             content_type=MatrixApi.mimetype_to_msgtype(content_type),
             filesize=filesize
         )
+
+        # Send the UploadError message if there is one
+        if type(upload_response) == UploadError:
+            return await send_generic_msg(client, room, upload_response.message)
 
         await client.room_send(
             room_id=room.room_id,
