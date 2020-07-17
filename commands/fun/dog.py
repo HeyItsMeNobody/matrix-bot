@@ -1,7 +1,7 @@
 import requests
 from nio import Api as MatrixApi
 from io import BufferedReader, BytesIO
-from util.general import get_image_width_and_height, send_generic_msg, allowed_image_type, requests_upload_helper
+from util.general import get_image_width_and_height, send_generic_msg, allowed_image_type, requests_upload_helper, get_image_and_upload
 from mimetypes import guess_extension
 from util.BaseCommand import BaseCommand
 from nio import UploadError
@@ -13,18 +13,14 @@ class dog(BaseCommand):
         self.description = "Sends dog pictures (Broken thumbnail)"
 
     async def execute(self, client, room, args):
-        # Get the dog picture
-        request, content_type, extension = self.get_dog_picture()
-        # Get the filesize
-        filesize = request.headers['Content-length']
+        # Get and upload the dog picture
+        upload_response, request, content_type, filesize, extension = await self.get_and_upload_dog_picture(client)
+        
         # Get the width and height
         try:
             width, height = get_image_width_and_height(BytesIO(request.content))
         except UnidentifiedImageError as e:
             return await send_generic_msg(client, room, f"{e.strerror} | Filesize: {filesize} | Extension: {extension}")
-
-        # Upload the image to the server
-        upload_response, maybe_keys = await requests_upload_helper(client, request, content_type, filesize)
 
         # Send the UploadError message if there is one
         if type(upload_response) == UploadError:
@@ -53,19 +49,18 @@ class dog(BaseCommand):
             }
         )
 
-    def get_dog_picture(self):
-        """ Returns request, content_type and extension """
+    async def get_and_upload_dog_picture(self, client):
+        """ Returns upload_response, request, content_type, filesize, extension """
         # Get the image url
         image_url_request = requests.get("https://random.dog/woof")
         image_url = "https://random.dog/" + image_url_request.text
-        # Get the image
-        request = requests.get(image_url)
 
-        # Get the content_type and extension
-        content_type = request.headers['Content-Type']
+        # Get the image and upload it
+        upload_response, request, content_type, filesize = await get_file_and_upload(client, image_url)
         extension = guess_extension(content_type)
+
         # See if the extension is allowed
         if not allowed_image_type("dog" + extension):
-            return self.get_dog_picture()
+            return await self.get_dog_picture()
 
-        return request, content_type, extension
+        return upload_response, request, content_type, filesize, extension

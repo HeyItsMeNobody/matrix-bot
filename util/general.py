@@ -5,6 +5,7 @@ from nio import Api as MatrixApi
 from io import BytesIO, BufferedReader
 
 import jinja2
+import requests
 
 def get_command(command):
     """Gets a simple command and returns the import."""
@@ -100,3 +101,17 @@ async def requests_upload_helper(client, request, mimetype, filesize):
     )
     # Return the response
     return upload_response, maybe_keys
+
+async def get_file_and_upload(client, url):
+    """ Gets image from URL and uploads it
+    Returns upload_response, request, content_type, filesize
+    """
+    # Get the file
+    request = requests.get(url)
+
+    # Get the content_type and extension and filesize
+    content_type = request.headers['Content-Type']
+    filesize = request.headers['Content-length']
+
+    upload_response, maybe_keys = await requests_upload_helper(client, request, content_type, filesize)
+    return upload_response, request, content_type, filesize
