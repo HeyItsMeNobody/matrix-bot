@@ -74,7 +74,6 @@ def get_image_width_and_height(file):
     """
     try:
         image = Image.open(file)
-        raise UnidentifiedImageError
     except UnidentifiedImageError as e:
         raise e
     width, height = image.size
