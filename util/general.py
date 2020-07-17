@@ -1,5 +1,6 @@
 from glob import glob
 from importlib import import_module
+from PIL import Image
 
 import jinja2
 
@@ -65,3 +66,11 @@ def get_jinja_template(name):
     template_loader = jinja2.FileSystemLoader(searchpath="./templates")
     template_environment = jinja2.Environment(loader=template_loader, autoescape=True, trim_blocks=True, lstrip_blocks=True)
     return template_environment.get_template(name)
+
+def get_image_width_and_height(file):
+    """ Get Image with and height """
+    image = Image.open(file)
+    width, height = image.size
+    # Reset file pointer
+    file.seek(0)
+    return width, height

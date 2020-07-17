@@ -25,6 +25,7 @@ MarkupSafe==1.1.1
 matrix-nio==0.14.1
 mccabe==0.6.1
 multidict==4.7.6
+Pillow==7.2.0
 pycparser==2.20
 pycryptodome==3.9.8
 pylint==2.5.3

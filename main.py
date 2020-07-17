@@ -64,39 +64,6 @@ async def message_callback(room: MatrixRoom, event: RoomMessageText) -> None:
         }
     )
 
-    # if raw_text.startswith("!dog"):
-    #     # Get the image url
-    #     image_url_request = requests.get("https://random.dog/woof")
-    #     image_url = "https://random.dog/" + image_url_request.text
-    #     # Get the image
-    #     content_type = requests.head(image_url).headers['Content-Type']
-    #     #image = requests.get(image_url, stream=True).raw
-    #     image = BytesIO(requests.get(image_url).content).getbuffer()
-    #     print(image_url)
-    #     print(content_type)
-    #     # Upload the image
-    #     upload_response, maybe_keys = await client.upload(
-    #         image,
-    #         content_type=MatrixApi.mimetype_to_msgtype(content_type)
-    #     )
-    #     # async with aiofiles.open(image) as f:
-    #     #     upload_response, maybe_keys = await client.upload(
-    #     #         f,
-    #     #         content_type=MatrixApi.mimetype_to_msgtype(content_type)
-    #     #     )
-
-        # await client.room_send(
-        #     room_id=room.room_id,
-        #     message_type="m.room.message",
-        #     content = {
-        #         "msgtype": MatrixApi.mimetype_to_msgtype(content_type),
-        #         "body": "dog.png",
-        #         "file": {
-        #             "url": upload_response.content_uri
-        #         }
-        #     }
-        # )
-
 # When invited to a room
 async def on_room_invite(room: MatrixInvitedRoom, event: InviteEvent) -> None:
     # Log message
