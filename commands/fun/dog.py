@@ -29,7 +29,7 @@ class dog(BaseCommand):
 
         # Send the UploadError message if there is one
         if type(upload_response) == UploadError:
-            return await send_generic_msg(client, room, upload_response.message)
+            return await send_generic_msg(client, room, f"{upload_response.message} | Filesize: {filesize}")
 
         await client.room_send(
             room_id=room.room_id,
