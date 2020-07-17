@@ -5,6 +5,7 @@ from util.general import get_image_width_and_height, send_generic_msg
 from mimetypes import guess_extension
 from util.BaseCommand import BaseCommand
 from nio import UploadError
+from PIL import UnidentifiedImageError
 
 class dog(BaseCommand):
     def __init__(self) -> None:
@@ -17,7 +18,10 @@ class dog(BaseCommand):
         # Get the filesize
         filesize = request.headers['Content-length']
         # Get the width and height
-        width, height = get_image_width_and_height(BytesIO(request.content))
+        try:
+            width, height = get_image_width_and_height(BytesIO(request.content))
+        except UnidentifiedImageError as e:
+            return await send_generic_msg(client, room, f"{e.strerror} | Filesize: {filesize} | Extension: {extension}")
         # Convert image to BufferedReader for client.upload
         image = BufferedReader(BytesIO(request.content))
         # Upload the image
@@ -29,7 +33,7 @@ class dog(BaseCommand):
 
         # Send the UploadError message if there is one
         if type(upload_response) == UploadError:
-            return await send_generic_msg(client, room, f"{upload_response.message} | Filesize: {filesize}")
+            return await send_generic_msg(client, room, f"{upload_response.message} | Filesize: {filesize} | Extension: {extension}")
 
         await client.room_send(
             room_id=room.room_id,

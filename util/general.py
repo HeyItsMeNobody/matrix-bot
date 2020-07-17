@@ -1,6 +1,6 @@
 from glob import glob
 from importlib import import_module
-from PIL import Image
+from PIL import Image, UnidentifiedImageError
 
 import jinja2
 
@@ -68,8 +68,15 @@ def get_jinja_template(name):
     return template_environment.get_template(name)
 
 def get_image_width_and_height(file):
-    """ Get Image with and height """
-    image = Image.open(file)
+    """ Get Image with and height 
+    
+    Can raise UnidentifiedImageError
+    """
+    try:
+        image = Image.open(file)
+        raise UnidentifiedImageError
+    except UnidentifiedImageError as e:
+        raise e
     width, height = image.size
     # Reset file pointer
     file.seek(0)
