@@ -13,7 +13,3 @@ class BaseCommand:
                 "body": "Base command!",
             }
         )
-
-    def allowed_image_type(self, filename):
-        return '.' in filename and \
-            filename.rsplit('.', 1)[1].lower() in ['jpg', 'jpeg', 'png', 'gif', 'webm']
