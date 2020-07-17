@@ -1,4 +1,6 @@
 import re
+import html2markdown
+
 from util.BaseCommand import BaseCommand
 
 class speak(BaseCommand):
@@ -26,7 +28,7 @@ class speak(BaseCommand):
             message_type="m.room.message",
             content = {
                 "msgtype": "m.text",
-                "body": text,
+                "body": html2markdown.convert(text),
                 "format": "org.matrix.custom.html",
                 "formatted_body": text
             }
