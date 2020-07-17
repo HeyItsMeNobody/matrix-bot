@@ -11,7 +11,7 @@ from io import BytesIO
 from pathlib import Path
 from glob import glob
 from importlib import import_module
-from util.general import get_command
+from util.general import get_command, send_generic_msg
 
 client_config = AsyncClientConfig(max_timeouts=10)
 client = AsyncClient(config.homeserver, config.user, config=client_config, ssl=False)
@@ -53,6 +53,9 @@ async def message_callback(room: MatrixRoom, event: RoomMessageText) -> None:
     if command:
         # Initialize command class
         command = command()
+        # Check if the command can only be used by bot admins, And react based on that.
+        if command.bot_admin_only and event.sender not in config.owners:
+            return await send_generic_msg(client, room, "You aren't permitted to use this command.")
         # Execute the command
         return await command.execute(client=client, room=room, args=args)
 

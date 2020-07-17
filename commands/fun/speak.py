@@ -5,6 +5,7 @@ from util.BaseCommand import BaseCommand
 
 class speak(BaseCommand):
     def __init__(self) -> None:
+        super().__init__()
         self.description = "Can echo whatever you want."
         self.arguments = {"--headers -h": {"accepts": "h[1-6]", "description": "Sets the HTML header size."}}
 

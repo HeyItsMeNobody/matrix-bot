@@ -6,6 +6,7 @@ from util.general import get_command, send_generic_msg, list_all_commands, get_j
 
 class help(BaseCommand):
     def __init__(self) -> None:
+        super().__init__()
         self.description = "Helps you!"
 
     async def execute(self, client, room, args):

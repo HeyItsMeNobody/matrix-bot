@@ -9,6 +9,7 @@ from PIL import UnidentifiedImageError
 
 class dog(BaseCommand):
     def __init__(self) -> None:
+        super().__init__()
         self.description = "Sends dog pictures (Broken thumbnail)"
         self.arguments = {"--example -e": {"accepts": None, "description": None}}
 

@@ -1,3 +1,4 @@
 homeserver = ""
-user = "
+user = ""
 password = ""
+owners = [""]
