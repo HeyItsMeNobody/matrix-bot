@@ -1,6 +1,8 @@
 from glob import glob
 from importlib import import_module
 from PIL import Image, UnidentifiedImageError
+from nio import Api as MatrixApi
+from io import BytesIO, BufferedReader
 
 import jinja2
 
@@ -85,3 +87,16 @@ def allowed_image_type(filename):
     """ Says if this is an allowed image type. """
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in ['jpg', 'jpeg', 'png', 'gif', 'webm']
+
+async def requests_upload_helper(client, request, mimetype, filesize):
+    """ Takes a requests object and returns upload_response, maybe_keys """
+    # Convert image to BufferedReader for client.upload
+    image = BufferedReader(BytesIO(request.content))
+    # Upload the image
+    upload_response, maybe_keys = await client.upload(
+        image,
+        content_type=MatrixApi.mimetype_to_msgtype(mimetype),
+        filesize=filesize
+    )
+    # Return the response
+    return upload_response, maybe_keys

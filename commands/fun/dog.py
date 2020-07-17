@@ -1,7 +1,7 @@
 import requests
 from nio import Api as MatrixApi
 from io import BufferedReader, BytesIO
-from util.general import get_image_width_and_height, send_generic_msg, allowed_image_type
+from util.general import get_image_width_and_height, send_generic_msg, allowed_image_type, requests_upload_helper
 from mimetypes import guess_extension
 from util.BaseCommand import BaseCommand
 from nio import UploadError
@@ -22,14 +22,9 @@ class dog(BaseCommand):
             width, height = get_image_width_and_height(BytesIO(request.content))
         except UnidentifiedImageError as e:
             return await send_generic_msg(client, room, f"{e.strerror} | Filesize: {filesize} | Extension: {extension}")
-        # Convert image to BufferedReader for client.upload
-        image = BufferedReader(BytesIO(request.content))
-        # Upload the image
-        upload_response, maybe_keys = await client.upload(
-            image,
-            content_type=MatrixApi.mimetype_to_msgtype(content_type),
-            filesize=filesize
-        )
+
+        # Upload the image to the server
+        upload_response, maybe_keys = await requests_upload_helper(client, request, content_type, filesize)
 
         # Send the UploadError message if there is one
         if type(upload_response) == UploadError:
