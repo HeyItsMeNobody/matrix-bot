@@ -61,6 +61,6 @@ class dog(BaseCommand):
 
         # See if the extension is allowed
         if not allowed_image_type("dog" + extension):
-            return await self.get_dog_picture()
+            return await self.get_and_upload_dog_picture(client)
 
         return upload_response, request, content_type, filesize, extension
