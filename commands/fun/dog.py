@@ -1,7 +1,7 @@
 import requests
 from nio import Api as MatrixApi
 from io import BufferedReader, BytesIO
-from util.general import get_image_width_and_height, send_generic_msg, allowed_image_type, requests_upload_helper, get_image_and_upload
+from util.general import get_image_width_and_height, send_generic_msg, allowed_image_type, requests_upload_helper, get_file_and_upload
 from mimetypes import guess_extension
 from util.BaseCommand import BaseCommand
 from nio import UploadError
@@ -15,7 +15,7 @@ class dog(BaseCommand):
     async def execute(self, client, room, args):
         # Get and upload the dog picture
         upload_response, request, content_type, filesize, extension = await self.get_and_upload_dog_picture(client)
-        
+
         # Get the width and height
         try:
             width, height = get_image_width_and_height(BytesIO(request.content))
