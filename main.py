@@ -60,16 +60,16 @@ async def message_callback(room: MatrixRoom, event: RoomMessageText) -> None:
         return await command.execute(client=client, room=room, args=args)
 
     # Send command not found message
-    await client.room_send(
-        room_id=room.room_id,
-        message_type="m.room.message",
-        content = {
-            "msgtype": "m.text",
-            "body": "COMMAND NOT FOUND",
-            "format": "org.matrix.custom.html",
-            "formatted_body": "<h1>COMMAND NOT FOUND</h1>"
-        }
-    )
+    #await client.room_send(
+    #    room_id=room.room_id,
+    #    message_type="m.room.message",
+    #    content = {
+    #        "msgtype": "m.text",
+    #        "body": "COMMAND NOT FOUND",
+    #        "format": "org.matrix.custom.html",
+    #        "formatted_body": "<h1>COMMAND NOT FOUND</h1>"
+    #    }
+    #)
 
 # When invited to a room
 async def on_room_invite(room: MatrixInvitedRoom, event: InviteEvent) -> None:
