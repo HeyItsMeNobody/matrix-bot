@@ -36,7 +36,7 @@ async def message_callback(room: MatrixRoom, event: RoomMessageText) -> None:
 
     # Filter out text
     raw_text = event.body
-    if not raw_text.startswith("!"):
+    if not raw_text.startswith("!!"):
         return
     
     # Remove the first character and split at a space
