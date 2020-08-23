@@ -52,8 +52,6 @@ class fox(BaseCommand):
     async def get_and_upload_fox_picture(self, client):
         """ Returns upload_response, request, content_type, filesize, extension """
         # Get the image url
-        #image_url_request = requests.get("https://random.dog/woof")
-        #image_url = "https://random.dog/" + image_url_request.text
         image_url = "https://foxrudor.de/"
 
         # Get the image and upload it
@@ -62,6 +60,6 @@ class fox(BaseCommand):
 
         # See if the extension is allowed
         if not allowed_image_type("fox" + extension):
-            return await self.get_and_upload_dog_picture(client)
+            return await self.get_and_upload_fox_picture(client)
 
         return upload_response, request, content_type, filesize, extension
